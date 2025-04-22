@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from __future__ import annotations
 
 import json
@@ -40,6 +41,21 @@ def create_folder_structure(base_path, project_name):
         "process/temp/_mask",
     ]
 
+=======
+import os
+import subprocess
+def create_folder_structure(base_path):
+    # Define the folder structure
+    folder_structure = [
+        'process',
+        'process/data',
+        'process/results',
+        'process/temp',
+        'process/temp/_mask'
+    ]
+
+    # Create each folder if it does not exist
+>>>>>>> 89c9170 (version 0.1)
     for folder in folder_structure:
         path = os.path.join(base_path, folder)
         if not os.path.exists(path):
@@ -48,6 +64,7 @@ def create_folder_structure(base_path, project_name):
         else:
             print(f"Folder already exists: {path}")
 
+<<<<<<< HEAD
 
 def run_shell_command(cmd, hold=False):
     print(f"Running command:\n{cmd}\n")
@@ -836,3 +853,15 @@ def export_selected_mowing_bands(base_path, project_name, basename, aoi_path=Non
         band_indexes=DEFAULT_BANDS,
         output_filename=output_filename,
     )
+=======
+def execute_cmd(hold, local_dir, force_dir, base_path, project_name, basename):
+    cmd = f'sudo docker run -v {local_dir} -v {force_dir} -u "$(id -u):$(id -g)" davidfrantz/force ' \
+          "force-higher-level " \
+          f"{base_path}/process/temp/{project_name}/FORCE/{basename}/tsa_UDF.prm"
+
+
+    if hold == True:
+        subprocess.run(['xterm', '-hold', '-e', cmd])
+    else:
+        subprocess.run(['xterm','-e', cmd])
+>>>>>>> 89c9170 (version 0.1)

@@ -2,7 +2,10 @@ matplotlib==3.7.1
 seaborn==0.12.2
 torch==2.0.1
 numpy==1.26.1
+<<<<<<< HEAD
 bottleneck==1.4.2
+=======
+>>>>>>> 89c9170 (version 0.1)
 tqdm==4.65.0 
 pandas==1.5.3
 scikit-learn==1.3.1
@@ -13,4 +16,8 @@ geopandas==0.14.4
 optuna==3.5.0
 optuna-dashboard==0.14.0
 cmaes==0.10.0
+<<<<<<< HEAD
 rasterstats==0.19.0
+=======
+rasterstats==0.19.0
+>>>>>>> 89c9170 (version 0.1)

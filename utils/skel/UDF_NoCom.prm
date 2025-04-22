@@ -42,12 +42,15 @@ OUTPUT_EXPLODE = FALSE
 # Type: Logical. Valid values: {TRUE,FALSE}
 OUTPUT_SUBFOLDERS = FALSE
 
+<<<<<<< HEAD
 # OTHERS
 CHUNK_SIZE = 3000 3000
 FAIL_IF_EMPTY = FALSE
 TARGET_SENSOR = SEN2L
 DATE_IGNORE_LANDSAT_7 = 2099-12-31
 
+=======
+>>>>>>> 89c9170 (version 0.1)
 # PARALLEL PROCESSING
 # ------------------------------------------------------------------------
 # This module is using a streaming mechanism to speed up processing. There
@@ -57,9 +60,15 @@ DATE_IGNORE_LANDSAT_7 = 2099-12-31
 # output. Each team can have multiple sub-threads to speed up the work. The
 # number of threads to use for each team is given by following parameters.
 # Type: Integer. Valid range: [1,...
+<<<<<<< HEAD
 NTHREAD_READ = 8
 NTHREAD_COMPUTE = 22
 NTHREAD_WRITE = 5
+=======
+NTHREAD_READ = 3
+NTHREAD_COMPUTE = 7
+NTHREAD_WRITE = 2
+>>>>>>> 89c9170 (version 0.1)
 # Use STREAMING = FALSE to disable streaming. This will perform reading,
 # computing and writing after one another in sequential mode.
 # Each operation will still be parallelized with above settings.
@@ -166,7 +175,10 @@ SPECTRAL_ADJUST = FALSE
 # Type: Character list. Valid values: {NODATA,CLOUD_OPAQUE,CLOUD_BUFFER,
 #   CLOUD_CIRRUS,CLOUD_SHADOW,SNOW,WATER,AOD_FILL,AOD_HIGH,AOD_INT,SUBZERO,
 #   SATURATION,SUN_LOW,ILLUMIN_NONE,ILLUMIN_POOR,ILLUMIN_LOW,SLOPED,WVP_NONE}
+<<<<<<< HEAD
 #SCREEN_QAI = NODATA CLOUD_OPAQUE CLOUD_SHADOW SATURATION
+=======
+>>>>>>> 89c9170 (version 0.1)
 SCREEN_QAI = NODATA CLOUD_OPAQUE CLOUD_BUFFER CLOUD_CIRRUS CLOUD_SHADOW SNOW SUBZERO SATURATION
 # Threshold for removing outliers. Triplets of observations are used to determine
 # the overall noise in the time series by computing linearly interpolating between
@@ -210,7 +222,11 @@ DOY_RANGE = 1 365
 #   RE2,RE3,BNIR,NDVI,EVI,NBR,NDTI,ARVI,SAVI,SARVI,TC-BRIGHT,TC-GREEN,TC-WET,
 #   TC-DI,NDBI,NDWI,MNDWI,NDMI,NDSI,SMA,kNDVI,NDRE1,NDRE2,CIre,NDVIre1,NDVIre2,
 #   NDVIre3,NDVIre1n,NDVIre2n,NDVIre3n,MSRre,MSRren,CCI}
+<<<<<<< HEAD
 INDEX = EVI
+=======
+INDEX = NDVI
+>>>>>>> 89c9170 (version 0.1)
 # Standardize the TSS time series with pixel mean and/or standard deviation?
 # Type: Logical. Valid values: {NONE,NORMALIZE,CENTER}
 STANDARDIZE_TSS = NONE

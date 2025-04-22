@@ -5,14 +5,22 @@ derived from Sentinel-2 and Landsat data with 10m spatial resolution. The code u
 
 ## 1. Installing
 
+<<<<<<< HEAD
 The basic parameters installations are implemented for Ubuntu 22.04 "jammy" and uses FORCE:3.9.02:
+=======
+The basic parameters installations are implemented for Ubuntu 22.04 "jammy":
+>>>>>>> 89c9170 (version 0.1)
 
 ```
 conda create --name SITSmow python==3.9
 conda activate SITSmow
 cd /path/to/repository/SITS_mowing
 pip install -r requirements.txt
+<<<<<<< HEAD
 sudo apt-get install gdal-bin
+=======
+sudo apt-get install xterm
+>>>>>>> 89c9170 (version 0.1)
 ```
 Notes: The code is build upon the [mowing UDF algorithm](https://github.com/davidfrantz/force-udf/tree/main/python/ts/mowingDetection).
 
@@ -21,6 +29,7 @@ Notes: The code is build upon the [mowing UDF algorithm](https://github.com/davi
 The algorithm is pixel based. The output is a raster stack with 17 bands that contain:
 
 - **B1:** Sum of mowing events
+<<<<<<< HEAD
 - **B2:** DOY of detected mowing events
 - **B3:** DOY of detected mowing events
 - **B4:** DOY of detected mowing events
@@ -28,6 +37,18 @@ The algorithm is pixel based. The output is a raster stack with 17 bands that co
 - **B6:** DOY of detected mowing events
 - **B7:** DOY of detected mowing events
 - **B8:** DOY of detected mowing events
+=======
+- **B2:** Maximum data gap in original time series
+- **B3:** absolute clear sky observations (CSO)
+- **B4:** CSO/potential observations (*100)
+- **B5:** DOY of detected mowing events
+- **B12:** Mean VI value of the defined grassland season
+- **B13:** Median VI value of the defined grassland season
+- **B14:** VI standard deviation of the defined grassland season
+- **B15:** Sum of differences between interpolated and original values (*100)
+- **B16:** Sum of differences between interpolated and original values * data availability (*100)
+- **B17:** Processing error [0,1]
+>>>>>>> 89c9170 (version 0.1)
 
 
 ### 3. Basics
@@ -35,8 +56,11 @@ The algorithm is pixel based. The output is a raster stack with 17 bands that co
 - The **SITS_mowing_script.py** has default tested parameters that can be modified considering user needs.
 - The main script will create two more files, the parameter file (tsa_UDF.prm) and the User Defined Function (UDF_pixel.py)
 file. The first is related to the needed information to run FORCE datacube; the second is related to the mowing detection algorithm.
+<<<<<<< HEAD
 - After FORCE has finished, the same repository now performs the Germany-safe postprocessing workflow internally:
   it clips intersecting tiles first, then builds the VRT and final merged GeoTIFF from those clipped tiles.
+=======
+>>>>>>> 89c9170 (version 0.1)
 
 ![structure](img/sits_MOWING.png)
 
@@ -49,6 +73,7 @@ The following parameters might be changed in the UDF_pixel.py file (search for t
 
 - For more information about the parameter and UDF files, please check the above links.
 
+<<<<<<< HEAD
 ## 4. UDF Benchmarking
 
 The repository includes a local benchmark script to profile the mowing UDF without rerunning FORCE. This is useful when optimizing the Python logic in `utils/skel/udf_pixel.py`.
@@ -75,6 +100,8 @@ snakeviz udf_forcepy.prof
 
 This benchmark isolates Python-side UDF costs from FORCE runtime, Docker startup, masking, and raster export.
 
+=======
+>>>>>>> 89c9170 (version 0.1)
 ## Authors
 
 * [Sebastian Valencia](https://github.com/Azarozo19)
@@ -83,7 +110,10 @@ This benchmark isolates Python-side UDF costs from FORCE runtime, Docker startup
 
 This project is licensed under the GNU General Public Licence, Version 3 (GPLv3) - see the LICENSE.md file for details
 
+<<<<<<< HEAD
 ## Aknowledgments
 
 - Mapping grassland mowing events across Germany based on combined Sentinel-2 and Landsat 8 time series. 
 [Marcel Schwieder and Max Wesemeyer.](https://www.sciencedirect.com/science/article/pii/S0034425721005150)
+=======
+>>>>>>> 89c9170 (version 0.1)

@@ -1,8 +1,15 @@
 import os
+<<<<<<< HEAD
 import time
 import shutil
 import geopandas as gpd
 from utils.utils import run_shell_command
+=======
+import subprocess
+import time
+import shutil
+import geopandas as gpd
+>>>>>>> 89c9170 (version 0.1)
 
 def generate_input_feature_line(tif_path, num_layers):
     sequence = ' '.join(str(i) for i in range(1, num_layers + 1))
@@ -49,6 +56,7 @@ def check_and_reproject_shapefile(shapefile_path, target_epsg=3035):
         print("Shapefile is already in EPSG: 3035")
         return shapefile_path
 
+<<<<<<< HEAD
 from pathlib import Path
 
 def tile_has_complete_output(tile_dir):
@@ -135,23 +143,33 @@ def reset_aoi_workspace(base_path, project_name, basename):
 
 
 def force_class_udf(project_name, force_dir, local_dir, base_path, aois, hold, date_range, clean=True):
+=======
+
+def force_class_udf(project_name, force_dir, local_dir, base_path, aois, hold,date_range):
+>>>>>>> 89c9170 (version 0.1)
     # defining parameters outsourced from main script
 
     # subprocess.run(['sudo', 'chmod', '-R', '777', f"{Path(temp_folder).parent}"])
     # subprocess.run(['sudo', 'chmod', '-R', '777', f"{Path(scripts_skel).parent}"])
     base_path_script = os.getcwd()
     startzeit = time.time()
+<<<<<<< HEAD
     force_dir_parts = force_dir.split(":")
     if len(force_dir_parts) != 2:
         raise ValueError(f"force_dir must be given as 'host_path:container_path', got: {force_dir}")
     _, force_container_dir = force_dir_parts
 
+=======
+>>>>>>> 89c9170 (version 0.1)
     for aoi in aois:
         print(f"FORCE PROCESSING FOR {aoi}")
 
         basename = os.path.basename(aoi)
+<<<<<<< HEAD
         if clean:
             reset_aoi_workspace(base_path, project_name, basename)
+=======
+>>>>>>> 89c9170 (version 0.1)
         print(f"Checking AOI path: {aoi}")
         if not os.path.exists(aoi):
             print(f"Error: AOI path does not exist -> {aoi}")
@@ -170,6 +188,7 @@ def force_class_udf(project_name, force_dir, local_dir, base_path, aois, hold, d
 
         print(f"Checking AOI path: {aoi} -> Exists: {os.path.exists(aoi)}")
 
+<<<<<<< HEAD
         cmd = (
             f'sudo docker run -v {local_dir} -v {force_dir} -u "$(id -u):$(id -g)" davidfrantz/force '
             f'force-tile-extent {aoi} -d {base_path_script}/utils/skel/force_cube_sceleton '
@@ -181,6 +200,18 @@ def force_class_udf(project_name, force_dir, local_dir, base_path, aois, hold, d
 
         generate_tiles_to_process(base_path, project_name, basename)
 
+=======
+        cmd = f'sudo docker run -v {local_dir} -v {force_dir} -u "$(id -u):$(id -g)" davidfrantz/force ' \
+              f'force-tile-extent  {aoi} -d {base_path_script}/utils/skel/force_cube_sceleton -a {base_path}/process/temp/{project_name}/FORCE/{basename}/tile_extent.txt'
+
+        if hold == True:
+            subprocess.run(['xterm', '-hold', '-e', cmd])
+        else:
+            subprocess.run(['xterm', '-e', cmd])
+
+        # subprocess.run(['sudo','chmod','-R','777',f"{temp_folder}/{project_name}/FORCE/{basename}"])
+
+>>>>>>> 89c9170 (version 0.1)
         ### mask
         os.makedirs(f"{base_path}/process/temp/_mask/{project_name}/{basename}", exist_ok=True)
 
@@ -188,6 +219,7 @@ def force_class_udf(project_name, force_dir, local_dir, base_path, aois, hold, d
 
         shutil.copy(f"{base_path_script}/utils/skel/force_cube_sceleton/datacube-definition.prj",
                     f"{base_path}/process/temp/_mask/{project_name}/{basename}/datacube-definition.prj")
+<<<<<<< HEAD
         cmd = (
             f'sudo docker run -v {local_dir} -u "$(id -u):$(id -g)" davidfrantz/force '
             f"force-cube -o {base_path}/process/temp/_mask/{project_name}/{basename} {aoi}"
@@ -201,6 +233,26 @@ def force_class_udf(project_name, force_dir, local_dir, base_path, aois, hold, d
             f"force-mosaic {base_path}/process/temp/_mask/{project_name}/{basename}"
         )
         run_shell_command(cmd, hold=hold)
+=======
+        cmd = f'sudo docker run -v {local_dir} -u "$(id -u):$(id -g)" davidfrantz/force ' \
+              f"force-cube -o {base_path}/process/temp/_mask/{project_name}/{basename} " \
+              f"{aoi}"
+
+        if hold == True:
+            subprocess.run(['xterm', '-hold', '-e', cmd])
+        else:
+            subprocess.run(['xterm', '-e', cmd])
+        # subprocess.run(['sudo','chmod','-R','777',f"{mask_folder}/{project_name}/{basename}"])
+
+        ###mask mosaic
+        cmd = f'sudo docker run -v {local_dir} -u "$(id -u):$(id -g)" davidfrantz/force ' \
+              f"force-mosaic {base_path}/process/temp/_mask/{project_name}/{basename}"
+
+        if hold == True:
+            subprocess.run(['xterm', '-hold', '-e', cmd])
+        else:
+            subprocess.run(['xterm', '-e', cmd])
+>>>>>>> 89c9170 (version 0.1)
 
         # subprocess.run(['sudo','chmod','-R','777',f"{temp_folder}/{project_name}/FORCE/{basename}"])
 
@@ -224,7 +276,11 @@ def force_class_udf(project_name, force_dir, local_dir, base_path, aois, hold, d
         # Define replacements
         replacements = {
             # INPUT/OUTPUT DIRECTORIES
+<<<<<<< HEAD
             f'DIR_LOWER = NULL': f'DIR_LOWER = {force_container_dir}/FORCE/C1/L2/ard',
+=======
+            f'DIR_LOWER = NULL': f'DIR_LOWER = {force_dir.split(":")[0]}/FORCE/C1/L2/ard',
+>>>>>>> 89c9170 (version 0.1)
             f'DIR_HIGHER = NULL': f'DIR_HIGHER = {base_path}/process/temp/{project_name}/FORCE/{basename}/tiles_tss',
             f'DIR_PROVENANCE = NULL': f'DIR_PROVENANCE = {base_path}/process/temp/{project_name}/FORCE/{basename}/provenance',
             # MASKING
@@ -233,14 +289,23 @@ def force_class_udf(project_name, force_dir, local_dir, base_path, aois, hold, d
             # PROCESSING EXTENT AND RESOLUTION
             f'X_TILE_RANGE = 0 0': f'X_TILE_RANGE = {X_TILE_RANGE}',
             f'Y_TILE_RANGE = 0 0': f'Y_TILE_RANGE = {Y_TILE_RANGE}',
+<<<<<<< HEAD
             f'FILE_TILE = NULL': f'FILE_TILE = {base_path}/process/temp/{project_name}/FORCE/{basename}/provenance/resume_tiles.txt',
             f'DATE_RANGE = YYYY-MM-DD YYYY-MM-DD': f'DATE_RANGE = {DATE_RANGE}',
             f'FILE_PYTHON = NULL': f'FILE_PYTHON = {base_path}/process/temp/{project_name}/FORCE/{basename}/UDF_pixel.py',
             f'STREAMING = TRUE': 'STREAMING = FALSE',
             f'PRETTY_PROGRESS = TRUE': 'PRETTY_PROGRESS = FALSE',
+=======
+            f'DATE_RANGE = YYYY-MM-DD YYYY-MM-DD': f'DATE_RANGE = {DATE_RANGE}',
+            f'FILE_PYTHON = NULL': f'FILE_PYTHON = {base_path}/process/temp/{project_name}/FORCE/{basename}/UDF_pixel.py',
+>>>>>>> 89c9170 (version 0.1)
         }
         # Replace parameters in the file
         replace_parameters(f"{base_path}/process/temp/{project_name}/FORCE/{basename}/tsa_UDF.prm", replacements)
 
     endzeit = time.time()
     print("FORCE-Processing beendet nach " + str((endzeit - startzeit) / 60) + " Minuten")
+<<<<<<< HEAD
+=======
+
+>>>>>>> 89c9170 (version 0.1)
