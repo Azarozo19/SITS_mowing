@@ -15,10 +15,10 @@ hold = True                                                                     
 # define parameters
 date_range = "2023-01-01 2023-06-31"                                                      # format YYYY-MM-DD YYYY-MM-DD
 aois = glob.glob("/rvt_mount/mowing_detection/process/data/Dingolfing_gmd_ex_3035.shp") # Define multiple or single AOI-Shapefile
-basename = os.path.basename (aois[0])                                                   #aois directory path
+
 
 
 create_folder_structure(base_path)                                                      #create folder structure
 force_class_udf(project_name, force_dir, local_dir, base_path, aois, hold, date_range) # Creates the parameter and the UDF file
+basename = os.path.basename (aois[0])                                                   #aois directory path
 execute_cmd(hold, local_dir, force_dir,base_path, project_name, basename)               # Runs FORCE function
-
