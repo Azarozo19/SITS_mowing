@@ -111,9 +111,16 @@ This benchmark isolates Python-side UDF costs from FORCE runtime, Docker startup
 This project is licensed under the GNU General Public Licence, Version 3 (GPLv3) - see the LICENSE.md file for details
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 00bcb7d (Mosaic step)
 ## Aknowledgments
 
 - Mapping grassland mowing events across Germany based on combined Sentinel-2 and Landsat 8 time series. 
 [Marcel Schwieder and Max Wesemeyer.](https://www.sciencedirect.com/science/article/pii/S0034425721005150)
+<<<<<<< HEAD
 =======
 >>>>>>> 89c9170 (version 0.1)
+=======
+
+>>>>>>> 00bcb7d (Mosaic step)
