@@ -43,14 +43,22 @@ OUTPUT_EXPLODE = FALSE
 OUTPUT_SUBFOLDERS = FALSE
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # OTHERS
 CHUNK_SIZE = 3000 3000
+=======
+# OTHERS
+CHUNK_SIZE = 1000 1000
+>>>>>>> 8739a86 (merge and number of bands fixed)
 FAIL_IF_EMPTY = FALSE
 TARGET_SENSOR = SEN2L
 DATE_IGNORE_LANDSAT_7 = 2099-12-31
 
+<<<<<<< HEAD
 =======
 >>>>>>> 89c9170 (version 0.1)
+=======
+>>>>>>> 8739a86 (merge and number of bands fixed)
 # PARALLEL PROCESSING
 # ------------------------------------------------------------------------
 # This module is using a streaming mechanism to speed up processing. There
@@ -61,6 +69,7 @@ DATE_IGNORE_LANDSAT_7 = 2099-12-31
 # number of threads to use for each team is given by following parameters.
 # Type: Integer. Valid range: [1,...
 <<<<<<< HEAD
+<<<<<<< HEAD
 NTHREAD_READ = 8
 NTHREAD_COMPUTE = 22
 NTHREAD_WRITE = 5
@@ -69,6 +78,11 @@ NTHREAD_READ = 3
 NTHREAD_COMPUTE = 7
 NTHREAD_WRITE = 2
 >>>>>>> 89c9170 (version 0.1)
+=======
+NTHREAD_READ = 7
+NTHREAD_COMPUTE = 9
+NTHREAD_WRITE = 3
+>>>>>>> 8739a86 (merge and number of bands fixed)
 # Use STREAMING = FALSE to disable streaming. This will perform reading,
 # computing and writing after one another in sequential mode.
 # Each operation will still be parallelized with above settings.

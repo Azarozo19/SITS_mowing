@@ -598,10 +598,14 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
                             date = dates[0:10]
                             mowingEvents.append(date)
 <<<<<<< HEAD
+<<<<<<< HEAD
                             mowingDoy.append(int(doy))
 =======
                             mowingDoy.append(np.int(doy))
 >>>>>>> 89c9170 (version 0.1)
+=======
+                            mowingDoy.append(int(doy))
+>>>>>>> 8739a86 (merge and number of bands fixed)
                             mow_date_index.append(evIndex)
                             i = i + 1
             else:
@@ -645,10 +649,14 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
                                     date = dates[0:10]
                                     mowingEvents.append(date)
 <<<<<<< HEAD
+<<<<<<< HEAD
                                     mowingDoy.append(int(doy))
 =======
                                     mowingDoy.append(np.int(doy))
 >>>>>>> 89c9170 (version 0.1)
+=======
+                                    mowingDoy.append(int(doy))
+>>>>>>> 8739a86 (merge and number of bands fixed)
                                     mow_date_index.append(evIndex)
                                     i = i + 1
                     else:
@@ -832,7 +840,7 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
             X = x[subsetter]
             nodata_ratio, max_gap_days, cso_abs = get_cso(X, Y, nodata=nodata, verbose=False, SoS=Season_min_frac,
                                                           EOS=Season_max_frac)
-            Y = np.array(ts[subsetter], dtype=np.float)
+            Y = np.array(ts[subsetter], dtype=float)
             Y[Y == nodata] = np.nan
             mean = np.nanmean(Y)
             median = np.nanmedian(Y)
@@ -898,12 +906,16 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
             if profileAnalytics:
                 return mowingEvents, mowing_doy_out, xPeak, yPeak, xPol, yPol
 <<<<<<< HEAD
+<<<<<<< HEAD
         except Exception as exc:
             _log_forcepy_exception(exc, dates, nodata, ts)
             _write_zero_output(outarray)
 =======
         except:
             # print('ERROR')
+=======
+        except Exception:
+>>>>>>> 8739a86 (merge and number of bands fixed)
             outarray[-1] = 1
 
 
