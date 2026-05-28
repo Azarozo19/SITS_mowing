@@ -34,6 +34,7 @@ The algorithm is pixel based. The output is a raster stack with 17 bands that co
 
 - **B1:** Sum of mowing events
 <<<<<<< HEAD
+<<<<<<< HEAD
 - **B2:** DOY of detected mowing events
 - **B3:** DOY of detected mowing events
 - **B4:** DOY of detected mowing events
@@ -53,6 +54,15 @@ The algorithm is pixel based. The output is a raster stack with 17 bands that co
 - **B16:** Sum of differences between interpolated and original values * data availability (*100)
 - **B17:** Processing error [0,1]
 >>>>>>> 89c9170 (version 0.1)
+=======
+- **B2:** DOY of detected mowing events
+- **B3:** DOY of detected mowing events
+- **B4:** DOY of detected mowing events
+- **B5:** DOY of detected mowing events
+- **B6:** DOY of detected mowing events
+- **B7:** DOY of detected mowing events
+- **B8:** DOY of detected mowing events
+>>>>>>> c2ec45f (Readme fixed)
 
 
 ### 3. Basics
