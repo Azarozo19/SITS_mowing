@@ -78,6 +78,9 @@ The following parameters might be changed in the UDF_pixel.py file (search for t
 - For more information about the parameter and UDF files, please check the above links.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 ## 4. UDF Benchmarking
 
 The repository includes a local benchmark script to profile the mowing UDF without rerunning FORCE. This is useful when optimizing the Python logic in `utils/skel/udf_pixel.py`.
@@ -85,7 +88,11 @@ The repository includes a local benchmark script to profile the mowing UDF witho
 Run the benchmark from the project folder:
 
 ```bash
+<<<<<<< HEAD
 cd /path/to/repository/SITS_mowing_
+=======
+cd /path/to/repository/SITS_mowing
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 python3 benchmark_udf.py --mode detect --iterations 5000 --profile-output udf_detect.prof
 python3 benchmark_udf.py --mode forcepy --iterations 2000 --profile-output udf_forcepy.prof
 ```
@@ -104,8 +111,11 @@ snakeviz udf_forcepy.prof
 
 This benchmark isolates Python-side UDF costs from FORCE runtime, Docker startup, masking, and raster export.
 
+<<<<<<< HEAD
 =======
 >>>>>>> 89c9170 (version 0.1)
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 ## Authors
 
 * [Sebastian Valencia](https://github.com/Azarozo19)
@@ -123,8 +133,11 @@ This project is licensed under the GNU General Public Licence, Version 3 (GPLv3)
 - Mapping grassland mowing events across Germany based on combined Sentinel-2 and Landsat 8 time series. 
 [Marcel Schwieder and Max Wesemeyer.](https://www.sciencedirect.com/science/article/pii/S0034425721005150)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 89c9170 (version 0.1)
 =======
 
 >>>>>>> 00bcb7d (Mosaic step)
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)

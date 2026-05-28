@@ -92,11 +92,17 @@ def run_shell_command(cmd, hold=False):
 def run_shell_command(cmd, hold=False):
     print(f"Running command:\n{cmd}\n")
 
+    xterm_cmd = ['xterm']
     if hold:
-        print("`hold=True` was requested, but commands are executed in the current terminal so output remains visible.")
+        xterm_cmd.append('-hold')
+    xterm_cmd.extend(['-e', cmd])
 
+<<<<<<< HEAD
 >>>>>>> 8739a86 (merge and number of bands fixed)
     result = subprocess.run(cmd, shell=True, check=False)
+=======
+    result = subprocess.run(xterm_cmd, check=False)
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
     if result.returncode != 0:
         raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
@@ -938,12 +944,28 @@ def mosaic_rasters(
     if band_indexes is None:
         band_indexes = list(range(1, src_files_to_mosaic[0].count + 1))
 
-    # Step 3: Mosaic the rasters
-    print("🔄 Merging rasters...")
+    single_source = src_files_to_mosaic[0] if len(src_files_to_mosaic) == 1 else None
+
+    # Step 3: Load data or mosaic the rasters
     start_merge = time.time()
-    mosaic, out_transform = merge(src_files_to_mosaic, indexes=band_indexes)
-    end_merge = time.time()
-    print(f"✔ Merged in {end_merge - start_merge:.2f} seconds.")
+    if single_source is not None and aoi_path:
+        print("📐 Clipping single raster with AOI...")
+        aoi_gdf = gpd.read_file(aoi_path)
+        if aoi_gdf.crs != single_source.crs:
+            aoi_gdf = aoi_gdf.to_crs(single_source.crs)
+        shapes = [geom.__geo_interface__ for geom in aoi_gdf.geometry]
+        mosaic, out_transform = mask(single_source, shapes=shapes, crop=True, indexes=band_indexes)
+        print(f"✔ Single-raster clip finished in {time.time() - start_merge:.2f} seconds.")
+        aoi_path = None
+    elif single_source is not None:
+        print("⏭ Single raster input, skipping merge.")
+        mosaic = single_source.read(indexes=band_indexes)
+        out_transform = single_source.transform
+        print(f"✔ Loaded single raster in {time.time() - start_merge:.2f} seconds.")
+    else:
+        print("🔄 Merging rasters...")
+        mosaic, out_transform = merge(src_files_to_mosaic, indexes=band_indexes)
+        print(f"✔ Merged in {time.time() - start_merge:.2f} seconds.")
 
     # Step 4: Prepare metadata
     out_meta = src_files_to_mosaic[0].meta.copy()
@@ -1024,7 +1046,8 @@ def export_selected_mowing_bands(base_path, project_name, basename, aoi_path=Non
         "process",
         "results",
         project_name,
-        f"{os.path.splitext(basename)[0]}_mowing_events.tif",
+        f"mowing-events_{os.path.splitext(basename)[0]}.tif",
+        #f"mowing_events_{os.path.splitext(basename)[0]}.tif",
     )
 
     return mosaic_rasters(
@@ -1036,8 +1059,11 @@ def export_selected_mowing_bands(base_path, project_name, basename, aoi_path=Non
         band_indexes=selected_band_indexes,
         output_filename=output_filename,
     )
+<<<<<<< HEAD
 
 
 
 
 >>>>>>> 00bcb7d (Mosaic step)
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)

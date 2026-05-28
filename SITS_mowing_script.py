@@ -11,6 +11,7 @@ from utils.utils import create_folder_structure, execute_cmd, export_selected_mo
 
 
 BASE_PATH = Path("/rvt_mount")
+<<<<<<< HEAD
 PROJECT_NAME = "mowing_2021_germany_1tile_"
 FORCE_DIR = "/force:/force"
 LOCAL_DIR = f"{BASE_PATH}:{BASE_PATH}"
@@ -114,13 +115,17 @@ mosaic_rasters(base_path, project_name, basename, aoi_path=aois[0], dtype="int16
 =======
 BASE_PATH = Path("/rvt_mount")
 PROJECT_NAME = "germany"
+=======
+PROJECT_NAME = ""
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 FORCE_DIR = "/force:/force"
-LOCAL_DIR = f"{BASE_PATH}:{BASE_PATH}"
+LOCAL_DIR = "/rvt_mount:/rvt_mount"
 HOLD = False
-CLEAN_RERUN = True
+CLEAN_RERUN = False
+PROFILE_OUTPUT = "sits_mowing_profile.prof"
 
-DATE_RANGE = "2023-01-01 2023-12-30"
-AOIS = sorted(BASE_PATH.glob("3DTests/data/harm_data/ilmenau.shp"))
+DATE_RANGE = "2018-01-01 2018-12-31"
+AOIS = sorted(BASE_PATH.glob("3DTests/data/harm_data/speed_test_tile_X0064_Y0050.shp"))
 
 
 def process_aoi(aoi_path):
@@ -158,5 +163,21 @@ def main():
 
 
 if __name__ == "__main__":
+    profiler = cProfile.Profile()
+    start_time = time.time()
+
+    profiler.enable()
     main()
+<<<<<<< HEAD
 >>>>>>> 8739a86 (merge and number of bands fixed)
+=======
+    profiler.disable()
+
+    total_time = time.time() - start_time
+    print(f"Total execution time: {total_time:.2f}s")
+
+    stats = pstats.Stats(profiler).sort_stats("cumtime")
+    stats.print_stats(30)
+    stats.dump_stats(PROFILE_OUTPUT)
+    print(f"cProfile data written to {PROFILE_OUTPUT}")
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)

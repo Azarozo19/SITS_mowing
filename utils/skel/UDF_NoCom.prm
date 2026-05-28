@@ -48,8 +48,12 @@ OUTPUT_SUBFOLDERS = FALSE
 CHUNK_SIZE = 3000 3000
 =======
 # OTHERS
+<<<<<<< HEAD
 CHUNK_SIZE = 1000 1000
 >>>>>>> 8739a86 (merge and number of bands fixed)
+=======
+CHUNK_SIZE = 3000 3000
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 FAIL_IF_EMPTY = FALSE
 TARGET_SENSOR = SEN2L
 DATE_IGNORE_LANDSAT_7 = 2099-12-31
@@ -158,7 +162,7 @@ USE_L2_IMPROPHE = FALSE
 # SENSORS = LNDLG).
 # Type: Character list. Valid values: {LND04,LND05,LND07,LND08,LND09,SEN2A,
 #   SEN2B,SEN2C,SEN2D,sen2a,sen2b,sen2c,sen2d,S1AIA,S1BIA,S1AID,S1BID,MOD01,MOD02,LNDLG,SEN2L,SEN2H,R-G-B,VVVHP,MODIS}
-SENSORS = SEN2A SEN2B
+SENSORS = SEN2A SEN2B LND08 LND09
 # Main product type to be used. Usually, this is a reflectance product like BOA.
 # When using composites, you may use BAP. This can be anything, but make sure that
 # the string can uniquely identify your product. As an example, do not use LEVEL2.
@@ -181,7 +185,7 @@ PRODUCT_TYPE_QUALITY = QAI
 # spectral response of any of these sensors to Sentinel-2A. Non-existent bands will be
 # predicted, too.
 # Type: Logical. Valid values: {TRUE,FALSE}
-SPECTRAL_ADJUST = FALSE
+SPECTRAL_ADJUST = TRUE
 
 # QAI SCREENING
 # ------------------------------------------------------------------------
@@ -237,10 +241,14 @@ DOY_RANGE = 1 365
 #   TC-DI,NDBI,NDWI,MNDWI,NDMI,NDSI,SMA,kNDVI,NDRE1,NDRE2,CIre,NDVIre1,NDVIre2,
 #   NDVIre3,NDVIre1n,NDVIre2n,NDVIre3n,MSRre,MSRren,CCI}
 <<<<<<< HEAD
+<<<<<<< HEAD
 INDEX = EVI
 =======
 INDEX = NDVI
 >>>>>>> 89c9170 (version 0.1)
+=======
+INDEX = EVI
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 # Standardize the TSS time series with pixel mean and/or standard deviation?
 # Type: Logical. Valid values: {NONE,NORMALIZE,CENTER}
 STANDARDIZE_TSS = NONE

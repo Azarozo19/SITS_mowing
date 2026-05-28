@@ -18,12 +18,18 @@ import numpy as np
 import warnings
 >>>>>>> 89c9170 (version 0.1)
 
+try:
+    import bottleneck as bn
+except ImportError:
+    bn = None
+
 """
 >>> Mowing detection
 >>> Copyright (C) 2021 Marcel Schwieder and Max Wesemeyer
 """
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 _warnings_configured = False
 _cached_force_dates = None
@@ -84,6 +90,11 @@ def _log_forcepy_exception(exc, dates, nodata, ts):
             log_file.write("\n".join(log_lines))
     except Exception:
         pass
+=======
+_warnings_configured = False
+_cached_force_dates = None
+_cached_force_year_fractions = None
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
 
 def _nanstd(values):
@@ -138,6 +149,7 @@ def get_cso(x, y, nodata=-9999, verbose=False, SoS=2018.2, EOS=2018.85):
         nodata_ratio = 0
         return nodata_ratio, (x[-1] - x[0]) * 365, nodata
 <<<<<<< HEAD
+<<<<<<< HEAD
     nodata_mask = y == nodata
     nodata_sum = int(np.count_nonzero(nodata_mask))
 
@@ -170,42 +182,35 @@ def get_cso(x, y, nodata=-9999, verbose=False, SoS=2018.2, EOS=2018.85):
     gap_to_SOS = (x[first_valid_idx] - SoS) * 365
 =======
     nodata_sum = np.sum(np.where(y == nodata, True, False))
+=======
+    nodata_mask = y == nodata
+    nodata_sum = int(np.count_nonzero(nodata_mask))
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
     nodata_ratio = 1 - (nodata_sum / len(y))
-    data_gap = 0
-    data_gap_indeces = []
     data_gap_dates_list = []
-    for index, value in enumerate(y):
-        if value == nodata:
-            if index < 1:
+    nodata_indices = np.flatnonzero(nodata_mask)
+    if nodata_indices.size:
+        split_points = np.where(np.diff(nodata_indices) > 1)[0] + 1
+        gap_groups = np.split(nodata_indices, split_points)
+        for group in gap_groups:
+            first_idx = int(group[0])
+            last_idx = int(group[-1])
+            if first_idx < 1:
                 continue
-            data_gap += 1
-            if data_gap == 0:
-                data_gap_indeces.append(index - 1)
-            data_gap_indeces.append(index)
-        else:
-            if len(x[data_gap_indeces]) >= 1:
-                data_gap_indeces.append(index)
-                gap_dates = x[data_gap_indeces]
-                gap_days = (gap_dates[-1] - gap_dates[0]) * 365
+            end_idx = last_idx + 1
+            if end_idx < len(x):
+                gap_days = (x[end_idx] - x[first_idx - 1]) * 365
                 data_gap_dates_list.append(gap_days)
-            else:
-                data_gap_dates_list.append(0)
-            data_gap = 0
-            data_gap_indeces = []
     #########################
     # calculating gap to EOS
-    index_to_end_save = -1
-    for indeces_to_end in range(1, len(y)):
-        if y[-indeces_to_end] == nodata:
-            index_to_end_save = -(indeces_to_end + 1)
-            continue
-        else:
-            break
-    gap_to_EOS = (EOS - x[index_to_end_save]) * 365
+    valid_indices = np.flatnonzero(~nodata_mask)
+    last_valid_idx = int(valid_indices[-1])
+    gap_to_EOS = (EOS - x[last_valid_idx]) * 365
     data_gap_dates_list.append(gap_to_EOS)
     #########################
     # calculating gap to SOS
+<<<<<<< HEAD
     index_to_start_save = 0
     for indeces_to_start in range(len(y)):
         if y[indeces_to_start] == nodata:
@@ -215,6 +220,10 @@ def get_cso(x, y, nodata=-9999, verbose=False, SoS=2018.2, EOS=2018.85):
             break
     gap_to_SOS = (x[index_to_start_save] - SoS) * 365
 >>>>>>> 89c9170 (version 0.1)
+=======
+    first_valid_idx = int(valid_indices[0])
+    gap_to_SOS = (x[first_valid_idx] - SoS) * 365
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
     data_gap_dates_list.append(gap_to_SOS)
     #########################
     if int(max(data_gap_dates_list)) == 0:
@@ -244,21 +253,31 @@ def toYearFraction(date):
 
 def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linear'):
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
     global _warnings_configured
     if not _warnings_configured:
         warnings.simplefilter('ignore')
         _warnings_configured = True
+<<<<<<< HEAD
 =======
     warnings.simplefilter('ignore')
 >>>>>>> 89c9170 (version 0.1)
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
     another_thrs = 0.15
 
     Y = np.asarray(ys) / 10000
     X = np.asarray(xs)
 <<<<<<< HEAD
+<<<<<<< HEAD
     clearWd_frac = clearWd * 0.00273973
 =======
 >>>>>>> 89c9170 (version 0.1)
+=======
+    clearWd_frac = clearWd * 0.00273973
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
     Season_min_frac = yr + GLstart
     Season_max_frac = yr + GLend
@@ -282,6 +301,7 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
         # averages duplicates in the time series
         records_array = X
         vals, inverse, count = np.unique(records_array, return_inverse=True, return_counts=True)
+<<<<<<< HEAD
 <<<<<<< HEAD
         Y = np.bincount(inverse, weights=Y) / count
         X = vals
@@ -311,15 +331,23 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
         Y = new_y_
         X = new_x_
 >>>>>>> 89c9170 (version 0.1)
+=======
+        Y = np.bincount(inverse, weights=Y) / count
+        X = vals
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
         ##############################################
 
         # filter time series to season (check if needed or a code legacy)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
         SoGLS = np.abs(X - Season_min_frac).argmin()
         EoGLS = np.abs(X - Season_max_frac).argmin()
         Y = np.asarray(Y[SoGLS:EoGLS])
         X = np.asarray(X[SoGLS:EoGLS])
+<<<<<<< HEAD
         if Y.size == 0 or X.size == 0 or not np.any(np.isfinite(Y)):
             return _empty_detection_result()
 =======
@@ -330,6 +358,8 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
         Y = np.asarray(Y[SoGLS[0][0]:EoGLS[0][0]])
         X = np.asarray(X[SoGLS[0][0]:EoGLS[0][0]])
 >>>>>>> 89c9170 (version 0.1)
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
         # calculate NDVI difference (t1) - (t-1)
         yT1 = np.asarray(Y[1:])
@@ -340,11 +370,15 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
         YDiff = np.append(YDiffzero, YDiff)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         EVI_STD = _nanstd(Y)
 =======
         EVI_STD = np.nanstd(Y)
         EVI_mean = np.nanmean(Y)
 >>>>>>> 89c9170 (version 0.1)
+=======
+        EVI_STD = _nanstd(Y)
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
         EVI_obs = sum(~np.isnan(Y))
         EVI_obs_pot = EVI_obs / len(Y)
 
@@ -358,6 +392,7 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
 
         # identify first peak somewhere around the "mid" of the season
         # DOY 120
+<<<<<<< HEAD
 <<<<<<< HEAD
         MoSStart = np.abs(X - Start_frac).argmin()
 
@@ -380,33 +415,38 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
 =======
         MoSStart = np.abs(X - Start_frac)
         MoSStart = np.where(MoSStart == np.min(MoSStart))
+=======
+        MoSStart = np.abs(X - Start_frac).argmin()
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
         # DOY 240
-        MoSEnd = np.abs(X - End_frac)
-        MoSEnd = np.where(MoSEnd == np.min(MoSEnd))
+        MoSEnd = np.abs(X - End_frac).argmin()
 
-        YPeakSub = Y[MoSStart[0][0]:MoSEnd[0][0]]
+        YPeakSub = Y[MoSStart:MoSEnd]
 
         if len(YPeakSub) == 0:
             return
 
-        MoSPeak = np.nanmax(YPeakSub)
-        MoSIndex = np.where(YPeakSub == MoSPeak)[0][0]
-        IndexDiff = len(X[0:MoSStart[0][0]])
-        MoSIndex = MoSIndex + IndexDiff
+        MoSPeak = _nanmax(YPeakSub)
+        MoSIndex = int(np.nanargmax(YPeakSub)) + MoSStart
 
-        earlyIndex2 = []
-        lateIndex2 = []
+        earlyIndex2 = -1
+        lateIndex2 = -1
 
         # todo check if early and late peak equals Y0
+<<<<<<< HEAD
         Y0 = np.argwhere(np.isfinite(Y))
         Y0 = np.min(Y0)
 >>>>>>> 89c9170 (version 0.1)
+=======
+        Y0 = int(np.flatnonzero(np.isfinite(Y))[0])
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
         if MoSIndex <= 2:
             if MoSIndex == 0:
                 earlyPeak1 = Y[0]
             else:
+<<<<<<< HEAD
 <<<<<<< HEAD
                 earlyPeak1 = _nanmax(Y[0:MoSIndex])
             earlyIndex1 = int(np.flatnonzero(Y == earlyPeak1)[0])
@@ -426,10 +466,21 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
                 earlyPeak1 = np.nanmax(Y[0:searchInd])
                 earlyIndex1 = np.min(np.where(Y == earlyPeak1))
 >>>>>>> 89c9170 (version 0.1)
+=======
+                earlyPeak1 = _nanmax(Y[0:MoSIndex])
+            earlyIndex1 = int(np.flatnonzero(Y == earlyPeak1)[0])
+        else:
+            searchInd = np.flatnonzero(X <= X[MoSIndex] - clearWd_frac)
+            if searchInd.size:
+                searchInd = int(searchInd[-1])
+                earlyPeak1 = _nanmax(Y[0:searchInd])
+                earlyIndex1 = int(np.flatnonzero(Y == earlyPeak1)[0])
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
             else:
                 earlyIndex1 = 0
 
         if MoSIndex + 2 == len(X):
+<<<<<<< HEAD
 <<<<<<< HEAD
             latePeak1 = _nanmax(Y[MoSIndex + 1:len(X)])
             lateIndex1 = int(np.flatnonzero(Y == latePeak1)[-1])
@@ -443,14 +494,23 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
 =======
             latePeak1 = np.nanmax(Y[MoSIndex + 1:len(X)])
             lateIndex1 = np.max(np.where(Y == latePeak1))
+=======
+            latePeak1 = _nanmax(Y[MoSIndex + 1:len(X)])
+            lateIndex1 = int(np.flatnonzero(Y == latePeak1)[-1])
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
         else:
-            searchInd2 = np.argwhere(X >= X[MoSIndex] + clearWd * 0.00273973)
-            if np.any(searchInd2):
-                searchInd2 = searchInd2.min()
+            searchInd2 = np.flatnonzero(X >= X[MoSIndex] + clearWd_frac)
+            if searchInd2.size:
+                searchInd2 = int(searchInd2[0])
                 if searchInd2 != len(X) - 1:
+<<<<<<< HEAD
                     latePeak1 = np.nanmax(Y[searchInd2:len(X) - 1])
                     lateIndex1 = np.max(np.where(Y == latePeak1))
 >>>>>>> 89c9170 (version 0.1)
+=======
+                    latePeak1 = _nanmax(Y[searchInd2:len(X) - 1])
+                    lateIndex1 = int(np.flatnonzero(Y == latePeak1)[-1])
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
                 else:
                     lateIndex1 = 0
             else:
@@ -458,11 +518,15 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
 
         if (earlyIndex1 != 0) and (earlyIndex1 - 2) > 0 and np.any(Y[0:earlyIndex1 - 2]):
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
             searchInd3 = np.flatnonzero(X <= X[earlyIndex1] - clearWd_frac)
             if searchInd3.size:
                 searchInd3 = int(searchInd3[-1])
                 earlyPeak2 = _nanmax(Y[0:searchInd3])
                 earlyIndex2 = int(np.flatnonzero(Y == earlyPeak2)[0])
+<<<<<<< HEAD
 
         if (lateIndex1 != 0) and lateIndex1 + 2 <= len(X) and np.any(Y[lateIndex1 + 2:len(X)]):
             searchInd4 = np.flatnonzero(X >= X[lateIndex1] + clearWd_frac)
@@ -489,17 +553,25 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
                 searchInd3 = searchInd3.max()
                 earlyPeak2 = np.nanmax(Y[0:searchInd3])
                 earlyIndex2 = np.min(np.where(Y == earlyPeak2))
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
         if (lateIndex1 != 0) and lateIndex1 + 2 <= len(X) and np.any(Y[lateIndex1 + 2:len(X)]):
-            searchInd4 = np.argwhere(X >= X[lateIndex1] + clearWd * 0.00273973)
-            if np.any(searchInd4):
-                searchInd4 = searchInd4.min()
-                latePeak2 = np.nanmax(Y[searchInd4:len(X)])
-                lateIndex2 = np.max(np.where(Y == latePeak2))
+            searchInd4 = np.flatnonzero(X >= X[lateIndex1] + clearWd_frac)
+            if searchInd4.size:
+                searchInd4 = int(searchInd4[0])
+                latePeak2 = _nanmax(Y[searchInd4:len(X)])
+                lateIndex2 = int(np.flatnonzero(Y == latePeak2)[-1])
 
-        Xarr = [X[Y0], X[earlyIndex1], X[MoSIndex], X[lateIndex1], X[len(X) - 1]]
-        Yarr = [Y[Y0], Y[earlyIndex1], Y[MoSIndex], Y[lateIndex1], Y[len(Y) - 1]]
+        xarr_indices = [Y0]
+        if earlyIndex2 != -1:
+            xarr_indices.append(earlyIndex2)
+        xarr_indices.extend([earlyIndex1, MoSIndex, lateIndex1])
+        if lateIndex2 != -1:
+            xarr_indices.append(lateIndex2)
+        xarr_indices.append(len(X) - 1)
 
+<<<<<<< HEAD
         if earlyIndex2:
             Xarr = [X[Y0], X[earlyIndex2], X[earlyIndex1], X[MoSIndex], X[lateIndex1], X[len(X) - 1]]
             Yarr = [Y[Y0], Y[earlyIndex2], Y[earlyIndex1], Y[MoSIndex], Y[lateIndex1], Y[len(Y) - 1]]
@@ -514,6 +586,10 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
                 Xarr = [X[Y0], X[earlyIndex2], X[earlyIndex1], X[MoSIndex], X[lateIndex1], X[lateIndex2], X[len(X) - 1]]
                 Yarr = [Y[Y0], Y[earlyIndex2], Y[earlyIndex1], Y[MoSIndex], Y[lateIndex1], Y[lateIndex2], Y[len(Y) - 1]]
 >>>>>>> 89c9170 (version 0.1)
+=======
+        Xarr = [X[idx] for idx in xarr_indices]
+        Yarr = [Y[idx] for idx in xarr_indices]
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
     if model == 'linear':
         # model and fit spline
@@ -534,10 +610,14 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
     diff = np.abs(polyVal - Y)
     diff_sum = np.nansum(diff)
 <<<<<<< HEAD
+<<<<<<< HEAD
     diff_mean = _nanmean(diff)
 =======
     diff_mean = np.nanmean(diff)
 >>>>>>> 89c9170 (version 0.1)
+=======
+    diff_mean = _nanmean(diff)
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
     testVal = diff_sum * EVI_obs_potII
 
     thresh = diff_mean
@@ -556,6 +636,7 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
         for evIndex, ev in enumerate(diff):
             ndvi_diff_check = False
 <<<<<<< HEAD
+<<<<<<< HEAD
             if np.count_nonzero(YDiff[evIndex] < NDVIthresh_list) >= posEval:
                 ndvi_diff_check = True
             else:
@@ -571,6 +652,12 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
                 continue
                 # ndvi_diff_check = False
 >>>>>>> 89c9170 (version 0.1)
+=======
+            if np.count_nonzero(YDiff[evIndex] < NDVIthresh_list) >= posEval:
+                ndvi_diff_check = True
+            else:
+                continue
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
             eventDate = X[evIndex]
 
@@ -635,12 +722,15 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
                                 time_mask = np.where((X >= X[mow_date_index[-1]]) & (X <= eventDate), True, False)
                                 any_preced_lower = np.any(np.ediff1d(Y[time_mask]) > 0)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
                                 # in case there is no increase in EVI values between two mowing events
                                 # "any_preced_lower" will be False
                                 # print('Any observation higher than preceding between DOY ', mowingDoy[-1], 'and ',
                                 #      int(doy), '?', any_preced_lower)
 >>>>>>> 89c9170 (version 0.1)
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
                                 #############################
                                 if any_preced_lower:
                                     dt = datetime(yr, 1, 1)
@@ -676,10 +766,15 @@ def forcepy_init(dates, sensors, bandnames):
     bandnames: numpy.ndarray[nBands](str)
     """
 <<<<<<< HEAD
+<<<<<<< HEAD
     _ensure_cached_force_dates(dates)
 
 =======
 >>>>>>> 89c9170 (version 0.1)
+=======
+    _ensure_cached_force_dates(dates)
+
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
     bandnames = ['mowingEvents', 'max_gap_days', 'CSO_ABS', 'Data_Ratio',
                  'Mow_1', 'Mow_2', 'Mow_3', 'Mow_4', 'Mow_5', 'Mow_6', 'Mow_7', 'Mean', 'Median', 'SD', 'diff_sum',
                  'diff_sum_dataavail', 'Error']
@@ -711,6 +806,7 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
     """
     global GLstart, GLend, GLendII, PSstart, PSend, GFstd, posEval, clrwd, profileAnalytics
 <<<<<<< HEAD
+<<<<<<< HEAD
     global _cached_force_dates, _cached_force_year_fractions
 
     profileAnalytics = False
@@ -730,28 +826,25 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
     # see details: https://enmap-box.readthedocs.io/en/latest/usr_section/usr_manual/eo4q.html?highlight=profile#profile-analytics
     # make sure to append an environmental variable in QGIS following this example:
     # Settings --> Options --> System --> Environment: Apply: Append | Variable: PYTHONPATH | Value: PATH\TO\mowingDetection_UDF.py
+=======
+    global _cached_force_dates, _cached_force_year_fractions
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
     profileAnalytics = False
 
-    # define the approximate length of grassland season in which you expect the main mowing activity; in decimal years = DOY / 365; make sure too include a temporal buffer --> here end of December
     GLstart = 0.2  # DOY 73
     GLend = 1  # DOY 365
-
-    # define end of grassland season
     GLendII = 0.85  # DOY
-
-    # define the approximate length of the main vegetation season; i.e., time of the year in which you expect at least one peak
     PSstart = 0.33  # DOY 120
     PSend = 0.66  # DOY 240
-
-    # adjust sensitivity of thresholds; i.e., width of gaussian function and number of positive evaluations needed
     GFstd = 0.02
     posEval = 40
-
-    # define minimum distance between two consecutive mowing eventsin days
     clrwd = 15
+<<<<<<< HEAD
     ###########################################################
 >>>>>>> 89c9170 (version 0.1)
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
     np.seterr(all='ignore')
     ts = inarray.squeeze()
@@ -790,22 +883,12 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
         return
     else:
 
-        dateList = []
-
-        if profileAnalytics:
-            for imgDate in dates:
-                dateList.append(imgDate)
-        else:
-            for imgDate in dates:
-                dateList.append(serial_date_to_string(imgDate))
-
-        date = np.array(dateList)
-
         try:
             if profileAnalytics:
-                x = date
+                x = np.array(dates)
             else:
-                x = np.array(list(map(toYearFraction, date)))
+                _ensure_cached_force_dates(dates)
+                x = _cached_force_year_fractions
 
             yr = int(str(x[0])[:4])
 >>>>>>> 89c9170 (version 0.1)
@@ -842,10 +925,16 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
                                                           EOS=Season_max_frac)
             Y = np.array(ts[subsetter], dtype=float)
             Y[Y == nodata] = np.nan
+<<<<<<< HEAD
             mean = np.nanmean(Y)
             median = np.nanmedian(Y)
             sd = np.nanstd(Y)
 >>>>>>> 89c9170 (version 0.1)
+=======
+            mean = _nanmean(Y)
+            median = _nanmedian(Y)
+            sd = _nanstd(Y)
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
 
             Season_min_frac = yr + GLstart
             Season_max_frac = yr + GLend
@@ -917,6 +1006,7 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
         except Exception:
 >>>>>>> 8739a86 (merge and number of bands fixed)
             outarray[-1] = 1
+<<<<<<< HEAD
 
 
 '''
@@ -941,3 +1031,5 @@ if __name__ == '__main__':
     print('Done:', result)
 '''
 >>>>>>> 89c9170 (version 0.1)
+=======
+>>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
