@@ -90,7 +90,7 @@ NTHREAD_WRITE = 3
 >>>>>>> 8739a86 (merge and number of bands fixed)
 =======
 NTHREAD_READ = 8
-NTHREAD_COMPUTE = 20
+NTHREAD_COMPUTE = 22
 NTHREAD_WRITE = 5
 >>>>>>> 24730c2 (prm file updated)
 # Use STREAMING = FALSE to disable streaming. This will perform reading,
@@ -200,9 +200,13 @@ SPECTRAL_ADJUST = FALSE
 #   CLOUD_CIRRUS,CLOUD_SHADOW,SNOW,WATER,AOD_FILL,AOD_HIGH,AOD_INT,SUBZERO,
 #   SATURATION,SUN_LOW,ILLUMIN_NONE,ILLUMIN_POOR,ILLUMIN_LOW,SLOPED,WVP_NONE}
 <<<<<<< HEAD
+<<<<<<< HEAD
 #SCREEN_QAI = NODATA CLOUD_OPAQUE CLOUD_SHADOW SATURATION
 =======
 >>>>>>> 89c9170 (version 0.1)
+=======
+#SCREEN_QAI = NODATA CLOUD_OPAQUE CLOUD_SHADOW SATURATION
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
 SCREEN_QAI = NODATA CLOUD_OPAQUE CLOUD_BUFFER CLOUD_CIRRUS CLOUD_SHADOW SNOW SUBZERO SATURATION
 # Threshold for removing outliers. Triplets of observations are used to determine
 # the overall noise in the time series by computing linearly interpolating between

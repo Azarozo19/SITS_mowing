@@ -1,5 +1,6 @@
 from scipy import interpolate
 <<<<<<< HEAD
+<<<<<<< HEAD
 from datetime import datetime, timedelta, timezone
 import time
 import numpy as np
@@ -17,6 +18,14 @@ import time
 import numpy as np
 import warnings
 >>>>>>> 89c9170 (version 0.1)
+=======
+from datetime import datetime, timedelta, timezone
+import time
+import numpy as np
+import warnings
+import os
+import traceback
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
 
 try:
     import bottleneck as bn
@@ -90,11 +99,14 @@ def _log_forcepy_exception(exc, dates, nodata, ts):
             log_file.write("\n".join(log_lines))
     except Exception:
         pass
+<<<<<<< HEAD
 =======
 _warnings_configured = False
 _cached_force_dates = None
 _cached_force_year_fractions = None
 >>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
+=======
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
 
 
 def _nanstd(values):
@@ -140,9 +152,12 @@ def _ensure_cached_force_dates(dates):
 def get_cso(x, y, nodata=-9999, verbose=False, SoS=2018.2, EOS=2018.85):
     if len(x) == 0 or len(y) == 0:
         return 0, 0, 0
+<<<<<<< HEAD
 =======
 def get_cso(x, y, nodata=-9999, verbose=False, SoS=2018.2, EOS=2018.85):
 >>>>>>> 89c9170 (version 0.1)
+=======
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
     # if no gap is found it will return 5 days as gap
     # in case the last potential observation misses the function calculates the gap to the EOS
     if np.all(y == nodata):
@@ -173,6 +188,7 @@ def get_cso(x, y, nodata=-9999, verbose=False, SoS=2018.2, EOS=2018.85):
     valid_indices = np.flatnonzero(~nodata_mask)
     if valid_indices.size == 0:
         return 0, 0, 0
+<<<<<<< HEAD
     last_valid_idx = int(valid_indices[-1])
     gap_to_EOS = (EOS - x[last_valid_idx]) * 365
     data_gap_dates_list.append(gap_to_EOS)
@@ -205,6 +221,8 @@ def get_cso(x, y, nodata=-9999, verbose=False, SoS=2018.2, EOS=2018.85):
     #########################
     # calculating gap to EOS
     valid_indices = np.flatnonzero(~nodata_mask)
+=======
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
     last_valid_idx = int(valid_indices[-1])
     gap_to_EOS = (EOS - x[last_valid_idx]) * 365
     data_gap_dates_list.append(gap_to_EOS)
@@ -292,10 +310,15 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
         Y = Y[validIndex_2]
         X = X[validIndex_2]
 <<<<<<< HEAD
+<<<<<<< HEAD
         if Y.size == 0 or X.size == 0:
             return _empty_detection_result()
 =======
 >>>>>>> 89c9170 (version 0.1)
+=======
+        if Y.size == 0 or X.size == 0:
+            return _empty_detection_result()
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
 
         ##############################################
         # averages duplicates in the time series
@@ -307,6 +330,7 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
         X = vals
         if Y.size == 0 or X.size == 0:
             return _empty_detection_result()
+<<<<<<< HEAD
 =======
 
         idx_vals_repeated = np.where(count > 1)[0]
@@ -335,6 +359,8 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
         Y = np.bincount(inverse, weights=Y) / count
         X = vals
 >>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
+=======
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
 
         ##############################################
 
@@ -348,6 +374,7 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
         Y = np.asarray(Y[SoGLS:EoGLS])
         X = np.asarray(X[SoGLS:EoGLS])
 <<<<<<< HEAD
+<<<<<<< HEAD
         if Y.size == 0 or X.size == 0 or not np.any(np.isfinite(Y)):
             return _empty_detection_result()
 =======
@@ -360,6 +387,10 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
 >>>>>>> 89c9170 (version 0.1)
 =======
 >>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
+=======
+        if Y.size == 0 or X.size == 0 or not np.any(np.isfinite(Y)):
+            return _empty_detection_result()
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
 
         # calculate NDVI difference (t1) - (t-1)
         yT1 = np.asarray(Y[1:])
@@ -384,10 +415,15 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
 
         LoS = int(X[len(X) - 1] * 365 - X[0] * 365)
 <<<<<<< HEAD
+<<<<<<< HEAD
         if LoS <= 0:
             return _empty_detection_result()
 =======
 >>>>>>> 89c9170 (version 0.1)
+=======
+        if LoS <= 0:
+            return _empty_detection_result()
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
         EVI_obs_potII = EVI_obs / (LoS / 5)
 
         # identify first peak somewhere around the "mid" of the season
@@ -403,6 +439,7 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
 
         if len(YPeakSub) == 0 or not np.any(np.isfinite(YPeakSub)):
             return _empty_detection_result()
+<<<<<<< HEAD
 
         MoSPeak = _nanmax(YPeakSub)
         MoSIndex = int(np.nanargmax(YPeakSub)) + MoSStart
@@ -426,6 +463,8 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
 
         if len(YPeakSub) == 0:
             return
+=======
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
 
         MoSPeak = _nanmax(YPeakSub)
         MoSIndex = int(np.nanargmax(YPeakSub)) + MoSStart
@@ -547,6 +586,7 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
         Yarr = [Y[idx] for idx in xarr_indices]
         if len(Xarr) < 2 or len(Yarr) < 2:
             return _empty_detection_result()
+<<<<<<< HEAD
 =======
             searchInd3 = np.argwhere(X <= X[earlyIndex1] - clearWd * 0.00273973)
             if np.any(searchInd3):
@@ -590,6 +630,8 @@ def detectMow_S2_new(xs, ys, clearWd, yr, type='ConHull', nOrder=3, model='linea
         Xarr = [X[idx] for idx in xarr_indices]
         Yarr = [Y[idx] for idx in xarr_indices]
 >>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
+=======
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
 
     if model == 'linear':
         # model and fit spline
@@ -784,12 +826,18 @@ def forcepy_init(dates, sensors, bandnames):
 
 def serial_date_to_string(srl_no):
 <<<<<<< HEAD
+<<<<<<< HEAD
     # FORCE dates are days since 1970-01-01. Do not shift by -1 day,
     # otherwise Jan 1 observations get pulled into the previous year.
     new_date = datetime(1970, 1, 1, 0, 0) + timedelta(days=int(srl_no))
 =======
     new_date = datetime(1970, 1, 1, 0, 0) + timedelta(int(srl_no) - 1)
 >>>>>>> 89c9170 (version 0.1)
+=======
+    # FORCE dates are days since 1970-01-01. Do not shift by -1 day,
+    # otherwise Jan 1 observations get pulled into the previous year.
+    new_date = datetime(1970, 1, 1, 0, 0) + timedelta(days=int(srl_no))
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
     return new_date
 
 
@@ -856,6 +904,7 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
 
     if all_no_data:
 <<<<<<< HEAD
+<<<<<<< HEAD
         _write_zero_output(outarray)
         return
     elif all_zero:
@@ -878,8 +927,12 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
             # season to the previous year.
             yr = int(np.floor(np.nanmedian(x)))
 =======
+=======
+        _write_zero_output(outarray)
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
         return
     elif all_zero:
+        _write_zero_output(outarray)
         return
     else:
 
@@ -889,14 +942,25 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
             else:
                 _ensure_cached_force_dates(dates)
                 x = _cached_force_year_fractions
+                if x is None or len(x) == 0:
+                    _write_zero_output(outarray)
+                    return
 
+<<<<<<< HEAD
             yr = int(str(x[0])[:4])
 >>>>>>> 89c9170 (version 0.1)
+=======
+            # Use the median year of the time series instead of the first
+            # observation so year-boundary acquisitions do not anchor the
+            # season to the previous year.
+            yr = int(np.floor(np.nanmedian(x)))
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
             #################################
             # get sd mean median
             Season_min_frac = yr + GLstart
             Season_max_frac = yr + GLendII
             subsetter = np.where((Season_min_frac < x) & (x < Season_max_frac), True, False)
+<<<<<<< HEAD
 <<<<<<< HEAD
             if not np.any(subsetter):
                 _write_zero_output(outarray)
@@ -918,19 +982,33 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
             median = _nanmedian(Y)
             sd = _nanstd(Y)
 =======
+=======
+            if not np.any(subsetter):
+                _write_zero_output(outarray)
+                return
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
 
             Y = np.array(ts[subsetter])
             X = x[subsetter]
+            if X.size == 0 or Y.size == 0:
+                _write_zero_output(outarray)
+                return
             nodata_ratio, max_gap_days, cso_abs = get_cso(X, Y, nodata=nodata, verbose=False, SoS=Season_min_frac,
                                                           EOS=Season_max_frac)
             Y = np.array(ts[subsetter], dtype=float)
             Y[Y == nodata] = np.nan
+<<<<<<< HEAD
 <<<<<<< HEAD
             mean = np.nanmean(Y)
             median = np.nanmedian(Y)
             sd = np.nanstd(Y)
 >>>>>>> 89c9170 (version 0.1)
 =======
+=======
+            if not np.any(np.isfinite(Y)):
+                _write_zero_output(outarray)
+                return
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
             mean = _nanmean(Y)
             median = _nanmedian(Y)
             sd = _nanstd(Y)
@@ -939,6 +1017,7 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
             Season_min_frac = yr + GLstart
             Season_max_frac = yr + GLend
             subsetter = np.where((Season_min_frac < x) & (x < Season_max_frac), True, False)
+<<<<<<< HEAD
 <<<<<<< HEAD
             if not np.any(subsetter):
                 _write_zero_output(outarray)
@@ -966,18 +1045,37 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
                     return
                 mowingEvents, mowingDoy, diff_sum, EVI_obs, EVI_obs_pot, diff_sum_dataavail = result
 =======
+=======
+            if not np.any(subsetter):
+                _write_zero_output(outarray)
+                return
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
             X = x[subsetter]
             Y = ts[subsetter]
+            if X.size == 0 or Y.size == 0:
+                _write_zero_output(outarray)
+                return
 
             if profileAnalytics:
-                mowingEvents, mowingDoy, diff_sum, EVI_obs, EVI_obs_pot, diff_sum_dataavail, xPeak, yPeak, xPol, yPol = detectMow_S2_new(
+                result = detectMow_S2_new(
                     X, Y, clearWd=clrwd, yr=yr, type='ConHull', nOrder=3, model='linear'
                 )
+                if result is None:
+                    _write_zero_output(outarray)
+                    return
+                mowingEvents, mowingDoy, diff_sum, EVI_obs, EVI_obs_pot, diff_sum_dataavail, xPeak, yPeak, xPol, yPol = result
             else:
-                mowingEvents, mowingDoy, diff_sum, EVI_obs, EVI_obs_pot, diff_sum_dataavail = detectMow_S2_new(
+                result = detectMow_S2_new(
                     X, Y, clearWd=clrwd, yr=yr, type='ConHull', nOrder=3, model='linear'
                 )
+<<<<<<< HEAD
 >>>>>>> 89c9170 (version 0.1)
+=======
+                if result is None:
+                    _write_zero_output(outarray)
+                    return
+                mowingEvents, mowingDoy, diff_sum, EVI_obs, EVI_obs_pot, diff_sum_dataavail = result
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
 
             mowing_doy_out = [0] * 7
 
@@ -994,6 +1092,7 @@ def forcepy_pixel(inarray, outarray, dates, sensors, bandnames, nodata, nproc):
                            int(diff_sum_dataavail * 100), 0]
             if profileAnalytics:
                 return mowingEvents, mowing_doy_out, xPeak, yPeak, xPol, yPol
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         except Exception as exc:
@@ -1033,3 +1132,8 @@ if __name__ == '__main__':
 >>>>>>> 89c9170 (version 0.1)
 =======
 >>>>>>> 80e689e (Optimize mowing UDF and add local benchmark workflow)
+=======
+        except Exception as exc:
+            _log_forcepy_exception(exc, dates, nodata, ts)
+            _write_zero_output(outarray)
+>>>>>>> 2542a81 (Update mowing runtime configuration and UDF safeguards)
