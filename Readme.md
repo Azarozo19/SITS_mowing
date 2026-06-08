@@ -21,10 +21,14 @@ conda activate SITSmow
 cd /path/to/repository/SITS_mowing
 pip install -r requirements.txt
 <<<<<<< HEAD
+<<<<<<< HEAD
 sudo apt-get install gdal-bin
 =======
 sudo apt-get install xterm
 >>>>>>> 89c9170 (version 0.1)
+=======
+sudo apt-get install gdal-bin
+>>>>>>> e1afd9e (Integrate tilewise mowing postprocessing)
 ```
 Notes: The code is build upon the [mowing UDF algorithm](https://github.com/davidfrantz/force-udf/tree/main/python/ts/mowingDetection).
 
@@ -71,10 +75,15 @@ The algorithm is pixel based. The output is a raster stack with 17 bands that co
 - The main script will create two more files, the parameter file (tsa_UDF.prm) and the User Defined Function (UDF_pixel.py)
 file. The first is related to the needed information to run FORCE datacube; the second is related to the mowing detection algorithm.
 <<<<<<< HEAD
+<<<<<<< HEAD
 - After FORCE has finished, the same repository now performs the Germany-safe postprocessing workflow internally:
   it clips intersecting tiles first, then builds the VRT and final merged GeoTIFF from those clipped tiles.
 =======
 >>>>>>> 89c9170 (version 0.1)
+=======
+- After FORCE has finished, the same repository now performs the Germany-safe postprocessing workflow internally:
+  it clips intersecting tiles first, then builds the VRT and final merged GeoTIFF from those clipped tiles.
+>>>>>>> e1afd9e (Integrate tilewise mowing postprocessing)
 
 ![structure](img/sits_MOWING.png)
 
